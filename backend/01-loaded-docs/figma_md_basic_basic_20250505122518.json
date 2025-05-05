@@ -1,0 +1,585 @@
+{
+  "filename": "figma_frontend_arch.md",
+  "document_type": "md",
+  "total_chunks": 26,
+  "total_pages": 1,
+  "loading_method": "basic",
+  "loading_strategy": null,
+  "chunking_strategy": "basic",
+  "chunking_method": "loaded",
+  "timestamp": "2025-05-05T12:25:18.982522",
+  "chunks": [
+    {
+      "content": "核心模块",
+      "metadata": {
+        "chunk_id": 1,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 1,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "element_type": "Title",
+        "id": "d015bb160d09141e1587cb6e436997fc",
+        "category": "Title",
+        "chunk_index": 1
+      }
+    },
+    {
+      "content": "1. UI 层 (src/ui/)",
+      "metadata": {
+        "chunk_id": 2,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 4,
+        "category_depth": 2,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "d015bb160d09141e1587cb6e436997fc",
+        "element_type": "Title",
+        "id": "cb9aa011312cb014a96e8f480ceee4a0",
+        "category": "Title",
+        "chunk_index": 2
+      }
+    },
+    {
+      "content": "components/ - 可重用UI组件",
+      "metadata": {
+        "chunk_id": 3,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "cb9aa011312cb014a96e8f480ceee4a0",
+        "element_type": "ListItem",
+        "id": "3d6392346b7e7401e5d5a086ae0e8664",
+        "category": "ListItem",
+        "chunk_index": 3
+      }
+    },
+    {
+      "content": "Toolbar.tsx - 工具栏",
+      "metadata": {
+        "chunk_id": 4,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "cb9aa011312cb014a96e8f480ceee4a0",
+        "element_type": "ListItem",
+        "id": "a6d8a89348e418e0a313f69bc8b16bc4",
+        "category": "ListItem",
+        "chunk_index": 4
+      }
+    },
+    {
+      "content": "Panels/ - 面板组件",
+      "metadata": {
+        "chunk_id": 5,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "cb9aa011312cb014a96e8f480ceee4a0",
+        "element_type": "ListItem",
+        "id": "06fb8849c1ce6ebc401641d8ea2d97e8",
+        "category": "ListItem",
+        "chunk_index": 5
+      }
+    },
+    {
+      "content": "Properties/ - 属性编辑器",
+      "metadata": {
+        "chunk_id": 6,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "cb9aa011312cb014a96e8f480ceee4a0",
+        "element_type": "ListItem",
+        "id": "64b669472ae29bb6e7537cd8906e613c",
+        "category": "ListItem",
+        "chunk_index": 6
+      }
+    },
+    {
+      "content": "Canvas/ - 画布相关组件",
+      "metadata": {
+        "chunk_id": 7,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "cb9aa011312cb014a96e8f480ceee4a0",
+        "element_type": "ListItem",
+        "id": "0d833b77f515dd0cbcf69daa4563b4a7",
+        "category": "ListItem",
+        "chunk_index": 7
+      }
+    },
+    {
+      "content": "2. 状态管理 (src/store/)",
+      "metadata": {
+        "chunk_id": 8,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 2,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "d015bb160d09141e1587cb6e436997fc",
+        "element_type": "Title",
+        "id": "ca922fc533a96da4cccad0e9fad8bf1e",
+        "category": "Title",
+        "chunk_index": 8
+      }
+    },
+    {
+      "content": "canvasSlice.ts - 画布状态",
+      "metadata": {
+        "chunk_id": 9,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "ca922fc533a96da4cccad0e9fad8bf1e",
+        "element_type": "ListItem",
+        "id": "8517c3595760daccc5c2419cef69b066",
+        "category": "ListItem",
+        "chunk_index": 9
+      }
+    },
+    {
+      "content": "toolsSlice.ts - 工具状态",
+      "metadata": {
+        "chunk_id": 10,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "ca922fc533a96da4cccad0e9fad8bf1e",
+        "element_type": "ListItem",
+        "id": "e14ff65137124f0533f48b395b719eea",
+        "category": "ListItem",
+        "chunk_index": 10
+      }
+    },
+    {
+      "content": "historySlice.ts - 历史记录",
+      "metadata": {
+        "chunk_id": 11,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "ca922fc533a96da4cccad0e9fad8bf1e",
+        "element_type": "ListItem",
+        "id": "d88656590f235450108696b4c1576c4e",
+        "category": "ListItem",
+        "chunk_index": 11
+      }
+    },
+    {
+      "content": "projectSlice.ts - 项目状态",
+      "metadata": {
+        "chunk_id": 12,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "ca922fc533a96da4cccad0e9fad8bf1e",
+        "element_type": "ListItem",
+        "id": "959cb1131448759541e1cdbe94337f72",
+        "category": "ListItem",
+        "chunk_index": 12
+      }
+    },
+    {
+      "content": "3. 画布系统 (src/canvas/)",
+      "metadata": {
+        "chunk_id": 13,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 2,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "d015bb160d09141e1587cb6e436997fc",
+        "element_type": "Title",
+        "id": "e3007fe18cb81ac95d8bd4f8d82e393b",
+        "category": "Title",
+        "chunk_index": 13
+      }
+    },
+    {
+      "content": "Engine.ts - 渲染引擎",
+      "metadata": {
+        "chunk_id": 14,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "e3007fe18cb81ac95d8bd4f8d82e393b",
+        "element_type": "ListItem",
+        "id": "d54b836118ea9340ce05a7197320de59",
+        "category": "ListItem",
+        "chunk_index": 14
+      }
+    },
+    {
+      "content": "Elements/ - 画布元素",
+      "metadata": {
+        "chunk_id": 15,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "e3007fe18cb81ac95d8bd4f8d82e393b",
+        "element_type": "ListItem",
+        "id": "c64866acac4d90f8673c22573498c20a",
+        "category": "ListItem",
+        "chunk_index": 15
+      }
+    },
+    {
+      "content": "Operations/ - 画布操作",
+      "metadata": {
+        "chunk_id": 16,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "e3007fe18cb81ac95d8bd4f8d82e393b",
+        "element_type": "ListItem",
+        "id": "67e47bcce3edfb6f5d9e2dfb403e0b55",
+        "category": "ListItem",
+        "chunk_index": 16
+      }
+    },
+    {
+      "content": "Renderer.ts - 渲染器",
+      "metadata": {
+        "chunk_id": 17,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "e3007fe18cb81ac95d8bd4f8d82e393b",
+        "element_type": "ListItem",
+        "id": "4f1d7243cc668c817e2cdcd81b5db140",
+        "category": "ListItem",
+        "chunk_index": 17
+      }
+    },
+    {
+      "content": "4. 工具系统 (src/tools/)",
+      "metadata": {
+        "chunk_id": 18,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 2,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "d015bb160d09141e1587cb6e436997fc",
+        "element_type": "Title",
+        "id": "68c2785d80da2ff75cd9e35f4752fd53",
+        "category": "Title",
+        "chunk_index": 18
+      }
+    },
+    {
+      "content": "BaseTool.ts - 工具基类",
+      "metadata": {
+        "chunk_id": 19,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "68c2785d80da2ff75cd9e35f4752fd53",
+        "element_type": "ListItem",
+        "id": "a7f8d2279c0cc94405239f36c23b23c8",
+        "category": "ListItem",
+        "chunk_index": 19
+      }
+    },
+    {
+      "content": "SelectTool.ts - 选择工具",
+      "metadata": {
+        "chunk_id": 20,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "68c2785d80da2ff75cd9e35f4752fd53",
+        "element_type": "ListItem",
+        "id": "0cf1c062f3e4a2beb89d9939a527949a",
+        "category": "ListItem",
+        "chunk_index": 20
+      }
+    },
+    {
+      "content": "ShapeTool.ts - 形状工具",
+      "metadata": {
+        "chunk_id": 21,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "68c2785d80da2ff75cd9e35f4752fd53",
+        "element_type": "ListItem",
+        "id": "bb76f3a03c9681ed3b0f4fde733f757f",
+        "category": "ListItem",
+        "chunk_index": 21
+      }
+    },
+    {
+      "content": "PenTool.ts - 钢笔工具",
+      "metadata": {
+        "chunk_id": 22,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "68c2785d80da2ff75cd9e35f4752fd53",
+        "element_type": "ListItem",
+        "id": "0095461898ccede49619451d00fe85ae",
+        "category": "ListItem",
+        "chunk_index": 22
+      }
+    },
+    {
+      "content": "5. 核心类型 (src/types/)",
+      "metadata": {
+        "chunk_id": 23,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 2,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "d015bb160d09141e1587cb6e436997fc",
+        "element_type": "Title",
+        "id": "5528ddf67f3822889c691821281bc567",
+        "category": "Title",
+        "chunk_index": 23
+      }
+    },
+    {
+      "content": "elements.ts - 元素类型定义",
+      "metadata": {
+        "chunk_id": 24,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "5528ddf67f3822889c691821281bc567",
+        "element_type": "ListItem",
+        "id": "c2752618e2edbef66168253ccd32eb77",
+        "category": "ListItem",
+        "chunk_index": 24
+      }
+    },
+    {
+      "content": "tools.ts - 工具类型定义",
+      "metadata": {
+        "chunk_id": 25,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "5528ddf67f3822889c691821281bc567",
+        "element_type": "ListItem",
+        "id": "98aedc19762a70b1892ff8bf23cbae51",
+        "category": "ListItem",
+        "chunk_index": 25
+      }
+    },
+    {
+      "content": "project.ts - 项目类型定义",
+      "metadata": {
+        "chunk_id": 26,
+        "page_number": 1,
+        "page_range": "1",
+        "word_count": 3,
+        "category_depth": 1,
+        "languages": [
+          "eng"
+        ],
+        "file_directory": "temp",
+        "filename": "figma_frontend_arch.md",
+        "filetype": "text/markdown",
+        "last_modified": "2025-05-05T12:25:18",
+        "parent_id": "5528ddf67f3822889c691821281bc567",
+        "element_type": "ListItem",
+        "id": "c45bc1ea96efc36cd889ea8455a006c4",
+        "category": "ListItem",
+        "chunk_index": 26
+      }
+    }
+  ],
+  "encoding": "utf-8"
+}

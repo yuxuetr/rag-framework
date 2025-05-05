@@ -6,6 +6,10 @@ import logging
 import os
 from datetime import datetime
 import json
+import csv
+import pandas as pd
+from unstructured.partition.text import partition_text
+from unstructured.partition.md import partition_md
 
 logger = logging.getLogger(__name__)
 """
@@ -23,6 +27,12 @@ PDF文档加载服务类
         - 支持文本分块
         - 提供元数据存储
         - 支持不同的加载策略（使用unstructured时）
+    
+    3. 支持多种文档格式：
+        - PDF: 支持多种解析库和策略
+        - TXT: 纯文本文件加载
+        - CSV: 表格数据加载，支持格式化表格输出
+        - Markdown: Markdown文档加载，支持结构化分块
  """
 class LoadingService:
     """
@@ -266,12 +276,231 @@ class LoadingService:
             logger.error(f"pdfplumber error: {str(e)}")
             raise
     
+    def load_txt(self, file_path: str, encoding: str = 'utf-8', chunking_strategy: str = None, chunking_options: dict = None) -> str:
+        """
+        加载TXT文本文档。
+
+        参数:
+            file_path (str): TXT文件路径
+            encoding (str): 文件编码，默认为utf-8
+            chunking_strategy (str, optional): 文本分块策略，可选 'basic', 'by_title'
+            chunking_options (dict, optional): 分块选项配置
+
+        返回:
+            str: 提取的文本内容
+        """
+        try:
+            text_blocks = []
+            
+            # 使用unstructured库处理文本文件
+            if chunking_strategy:
+                # 准备分块参数
+                chunking_params = {}
+                if chunking_strategy == "basic":
+                    chunking_params = {
+                        "max_characters": chunking_options.get("maxCharacters", 4000),
+                        "new_after_n_chars": chunking_options.get("newAfterNChars", 3000),
+                        "combine_text_under_n_chars": chunking_options.get("combineTextUnderNChars", 2000),
+                        "overlap": chunking_options.get("overlap", 200),
+                    }
+                
+                elements = partition_text(file_path, **chunking_params, encoding=encoding)
+                
+                for i, elem in enumerate(elements, 1):
+                    metadata = elem.metadata.__dict__ if hasattr(elem, 'metadata') else {}
+                    
+                    cleaned_metadata = {}
+                    for key, value in metadata.items():
+                        if key == '_known_field_names':
+                            continue
+                        
+                        try:
+                            json.dumps({key: value})
+                            cleaned_metadata[key] = value
+                        except (TypeError, OverflowError):
+                            cleaned_metadata[key] = str(value)
+                    
+                    # 添加元素信息
+                    cleaned_metadata['element_type'] = elem.__class__.__name__
+                    cleaned_metadata['id'] = str(getattr(elem, 'id', None))
+                    cleaned_metadata['chunk_index'] = i
+                    
+                    text_blocks.append({
+                        "text": str(elem),
+                        "page": 1,  # 文本文件视为单页
+                        "metadata": cleaned_metadata
+                    })
+            else:
+                # 简单读取文本
+                with open(file_path, 'r', encoding=encoding) as file:
+                    content = file.read()
+                    text_blocks.append({
+                        "text": content,
+                        "page": 1
+                    })
+            
+            self.total_pages = 1  # 文本文件视为单页
+            self.current_page_map = text_blocks
+            return "\n".join(block["text"] for block in text_blocks)
+            
+        except Exception as e:
+            logger.error(f"Text loading error: {str(e)}")
+            raise
+    
+    def load_csv(self, file_path: str, delimiter: str = ',', encoding: str = 'utf-8', use_pandas: bool = True) -> str:
+        """
+        加载CSV文档。
+
+        参数:
+            file_path (str): CSV文件路径
+            delimiter (str): 字段分隔符，默认为逗号
+            encoding (str): 文件编码，默认为utf-8
+            use_pandas (bool): 是否使用pandas加载，默认为True
+
+        返回:
+            str: 提取的文本内容，格式化为表格文本
+        """
+        try:
+            text_content = ""
+            
+            if use_pandas:
+                # 使用pandas读取CSV文件
+                df = pd.read_csv(file_path, delimiter=delimiter, encoding=encoding)
+                text_content = df.to_string(index=False)
+            else:
+                # 使用csv模块读取
+                rows = []
+                with open(file_path, 'r', encoding=encoding) as file:
+                    csv_reader = csv.reader(file, delimiter=delimiter)
+                    header = next(csv_reader)
+                    rows.append(header)
+                    for row in csv_reader:
+                        rows.append(row)
+                
+                # 格式化为文本表格
+                col_widths = [max(len(str(row[i])) for row in rows) for i in range(len(rows[0]))]
+                formatted_rows = []
+                
+                # 添加表头
+                header_row = [str(rows[0][i]).ljust(col_widths[i]) for i in range(len(rows[0]))]
+                formatted_rows.append(" | ".join(header_row))
+                
+                # 添加分隔线
+                separator = ["-" * col_widths[i] for i in range(len(rows[0]))]
+                formatted_rows.append(" | ".join(separator))
+                
+                # 添加数据行
+                for row in rows[1:]:
+                    formatted_row = [str(row[i]).ljust(col_widths[i]) for i in range(len(row))]
+                    formatted_rows.append(" | ".join(formatted_row))
+                
+                text_content = "\n".join(formatted_rows)
+            
+            # 创建文本块
+            text_blocks = [{
+                "text": text_content,
+                "page": 1,  # CSV文件视为单页
+                "metadata": {
+                    "file_type": "csv",
+                    "delimiter": delimiter,
+                    "encoding": encoding
+                }
+            }]
+            
+            self.total_pages = 1
+            self.current_page_map = text_blocks
+            return text_content
+            
+        except Exception as e:
+            logger.error(f"CSV loading error: {str(e)}")
+            raise
+    
+    def load_markdown(self, file_path: str, encoding: str = 'utf-8', chunking_strategy: str = None, chunking_options: dict = None) -> str:
+        """
+        加载Markdown文档。
+
+        参数:
+            file_path (str): Markdown文件路径
+            encoding (str): 文件编码，默认为utf-8
+            chunking_strategy (str, optional): 文本分块策略，可选 'basic', 'by_title'
+            chunking_options (dict, optional): 分块选项配置
+
+        返回:
+            str: 提取的文本内容
+        """
+        try:
+            text_blocks = []
+            
+            # 使用unstructured库处理Markdown文件
+            if chunking_strategy:
+                # 准备分块参数
+                chunking_params = {}
+                if chunking_strategy == "basic":
+                    chunking_params = {
+                        "max_characters": chunking_options.get("maxCharacters", 4000),
+                        "new_after_n_chars": chunking_options.get("newAfterNChars", 3000),
+                        "combine_text_under_n_chars": chunking_options.get("combineTextUnderNChars", 2000),
+                        "overlap": chunking_options.get("overlap", 200),
+                    }
+                elif chunking_strategy == "by_title":
+                    chunking_params = {
+                        "chunking_strategy": "by_title",
+                        "combine_text_under_n_chars": chunking_options.get("combineTextUnderNChars", 2000),
+                    }
+                
+                elements = partition_md(file_path, **chunking_params)
+                
+                for i, elem in enumerate(elements, 1):
+                    metadata = elem.metadata.__dict__ if hasattr(elem, 'metadata') else {}
+                    
+                    cleaned_metadata = {}
+                    for key, value in metadata.items():
+                        if key == '_known_field_names':
+                            continue
+                        
+                        try:
+                            json.dumps({key: value})
+                            cleaned_metadata[key] = value
+                        except (TypeError, OverflowError):
+                            cleaned_metadata[key] = str(value)
+                    
+                    # 添加元素信息
+                    cleaned_metadata['element_type'] = elem.__class__.__name__
+                    cleaned_metadata['id'] = str(getattr(elem, 'id', None))
+                    cleaned_metadata['category'] = str(getattr(elem, 'category', None))
+                    cleaned_metadata['chunk_index'] = i
+                    
+                    text_blocks.append({
+                        "text": str(elem),
+                        "page": 1,  # Markdown文件视为单页
+                        "metadata": cleaned_metadata
+                    })
+            else:
+                # 简单读取文本
+                with open(file_path, 'r', encoding=encoding) as file:
+                    content = file.read()
+                    text_blocks.append({
+                        "text": content,
+                        "page": 1,
+                        "metadata": {
+                            "file_type": "markdown"
+                        }
+                    })
+            
+            self.total_pages = 1  # Markdown文件视为单页
+            self.current_page_map = text_blocks
+            return "\n".join(block["text"] for block in text_blocks)
+            
+        except Exception as e:
+            logger.error(f"Markdown loading error: {str(e)}")
+            raise
+    
     def save_document(self, filename: str, chunks: list, metadata: dict, loading_method: str, strategy: str = None, chunking_strategy: str = None) -> str:
         """
         保存处理后的文档数据。
 
         参数:
-            filename (str): 原PDF文件名
+            filename (str): 原文件名
             chunks (list): 文档分块列表
             metadata (dict): 文档元数据
             loading_method (str): 使用的加载方法
@@ -283,26 +512,49 @@ class LoadingService:
         """
         try:
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-            base_name = filename.replace('.pdf', '').split('_')[0]
+            file_extension = os.path.splitext(filename)[1].lower()
+            base_name = os.path.basename(filename).replace(file_extension, '').split('_')[0]
             
-            # Adjust the document name to include strategy if unstructured
-            if loading_method == "unstructured" and strategy:
-                doc_name = f"{base_name}_{loading_method}_{strategy}_{chunking_strategy}_{timestamp}"
+            # 确定文档类型
+            doc_type = ''
+            if file_extension == '.pdf':
+                doc_type = 'pdf'
+            elif file_extension == '.txt':
+                doc_type = 'txt'
+            elif file_extension == '.csv':
+                doc_type = 'csv'
+            elif file_extension in ['.md', '.markdown']:
+                doc_type = 'md'
             else:
-                doc_name = f"{base_name}_{loading_method}_{timestamp}"
+                doc_type = 'doc'  # 默认文档类型
+            
+            # 根据不同文档类型和加载方法构建文档名称
+            if doc_type == 'pdf' and loading_method == "unstructured" and strategy:
+                doc_name = f"{base_name}_{loading_method}_{strategy}_{chunking_strategy}_{timestamp}"
+            elif chunking_strategy:
+                doc_name = f"{base_name}_{doc_type}_{loading_method}_{chunking_strategy}_{timestamp}"
+            else:
+                doc_name = f"{base_name}_{doc_type}_{loading_method}_{timestamp}"
             
             # 构建文档数据结构，确保所有值都是可序列化的
             document_data = {
                 "filename": str(filename),
+                "document_type": str(doc_type),
                 "total_chunks": int(len(chunks)),
                 "total_pages": int(metadata.get("total_pages", 1)),
                 "loading_method": str(loading_method),
                 "loading_strategy": str(strategy) if loading_method == "unstructured" and strategy else None,
-                "chunking_strategy": str(chunking_strategy) if loading_method == "unstructured" and chunking_strategy else None,
+                "chunking_strategy": str(chunking_strategy) if chunking_strategy else None,
                 "chunking_method": "loaded",
                 "timestamp": datetime.now().isoformat(),
                 "chunks": chunks
             }
+            
+            # 添加特定文档类型的元数据
+            if doc_type == 'csv' and metadata.get('delimiter'):
+                document_data['delimiter'] = metadata.get('delimiter')
+            if metadata.get('encoding'):
+                document_data['encoding'] = metadata.get('encoding')
             
             # 保存到文件
             filepath = os.path.join("01-loaded-docs", f"{doc_name}.json")

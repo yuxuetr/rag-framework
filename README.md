@@ -24,7 +24,7 @@
 你可以通过克隆此仓库到你的本地机器来开始：
 
 ```shell
-git clone https://github.com/huangjia2019/rag-project01-framework.git
+git clone https://github.com/huangjia2019/rag-framework.git
 ```
 
 然后导航至目录，并按照部署前端或后端的指示开始操作。
@@ -53,16 +53,16 @@ git clone https://github.com/huangjia2019/rag-project01-framework.git
 
 ```bash
 const config = {
-              development: {
-                apiBaseUrl: 'http://192.168.172.128:8001'
-              },
-              production: {
-                apiBaseUrl: 'http://api.example.com'
-              },
-              test: {
-                apiBaseUrl: 'http://localhost:8001'
-              }
-            };
+  development: {
+    apiBaseUrl: 'http://192.168.172.128:8001'
+  },
+  production: {
+    apiBaseUrl: 'http://api.example.com'
+  },
+  test: {
+    apiBaseUrl: 'http://localhost:8001'
+  }
+};
 ```
 
 运行 `npm run dev` 命令来安装项目依赖的前端组件。
@@ -232,29 +232,31 @@ bac
 └── utils/                                 # 工具目录
     └── config.py                          # 配置文件
 ```
+
 ### 前端项目架构 
-```
+
+```shell
 frontend/
 ├── public/                # 静态资源目录
-│   └── vite.svg          # Vite logo
-├── src/                  # 源代码目录
-│   ├── assets/          # 项目资源文件(图片、字体等)
-│   ├── components/      # 可复用的 React 组件
-│   ├── pages/           # 页面级组件
-│   ├── App.css         # App 组件样式
-│   ├── App.jsx         # 根组件
-│   ├── index.css       # 全局样式
-│   └── main.jsx        # 应用入口文件
-├── .gitignore           # Git 忽略文件配置
-├── eslint.config.js     # ESLint 代码规范配置
-├── index.html          # 项目 HTML 模板
-├── note.txt            # 项目笔记
-├── package.json        # 项目依赖和脚本配置
-├── package-lock.json   # 依赖版本锁定文件
-├── postcss.config.js   # PostCSS 配置
-├── README.md          # 项目说明文档
-├── tailwind.config.js  # Tailwind CSS 配置
-└── vite.config.js     # Vite 构建工具配置 
+│   └── vite.svg           # Vite logo
+├── src/                   # 源代码目录
+│   ├── assets/            # 项目资源文件(图片、字体等)
+│   ├── components/        # 可复用的 React 组件
+│   ├── pages/             # 页面级组件
+│   ├── App.css            # App 组件样式
+│   ├── App.jsx            # 根组件
+│   ├── index.css          # 全局样式
+│   └── main.jsx           # 应用入口文件
+├── .gitignore             # Git 忽略文件配置
+├── eslint.config.js       # ESLint 代码规范配置
+├── index.html             # 项目 HTML 模板
+├── note.txt               # 项目笔记
+├── package.json           # 项目依赖和脚本配置
+├── package-lock.json      # 依赖版本锁定文件
+├── postcss.config.js      # PostCSS 配置
+├── README.md              # 项目说明文档
+├── tailwind.config.js     # Tailwind CSS 配置
+└── vite.config.js         # Vite 构建工具配置 
 ```
 
 ## 常见部署异常

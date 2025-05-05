@@ -550,7 +550,10 @@ async def delete_embedded_doc(doc_name: str):
 async def parse_file(
     file: UploadFile = File(...),
     loading_method: str = Form(...),
-    parsing_option: str = Form(...)
+    parsing_option: str = Form(...),
+    file_type: str = Form("pdf"),
+    extract_images: bool = Form(True),
+    extract_tables: bool = Form(True)
 ):
     try:
         # Save uploaded file
@@ -562,24 +565,24 @@ async def parse_file(
         # Prepare metadata
         metadata = {
             "filename": file.filename,
+            "file_type": file_type,
             "loading_method": loading_method,
             "original_file_size": len(content),
             "processing_date": datetime.now().isoformat(),
             "parsing_method": parsing_option,
         }
         
-        loading_service = LoadingService()
-        raw_text = loading_service.load_pdf(temp_path, loading_method)
-        metadata["total_pages"] = loading_service.get_total_pages()
-        
-        page_map = loading_service.get_page_map()
-        
+        # 初始化解析服务
         parsing_service = ParsingService()
-        parsed_content = parsing_service.parse_pdf(
-            raw_text, 
-            parsing_option, 
-            metadata,
-            page_map=page_map
+        
+        # 使用新的解析方法
+        parsed_content = parsing_service.parse_document(
+            file_path=temp_path,
+            method=parsing_option,
+            file_type=file_type,
+            metadata=metadata,
+            extract_images=extract_images,
+            extract_tables=extract_tables
         )
         
         # Clean up temp file
@@ -593,10 +596,14 @@ async def parse_file(
 @app.post("/load")
 async def load_file(
     file: UploadFile = File(...),
+    file_type: str = Form("pdf"),
     loading_method: str = Form(...),
     strategy: str = Form(None),
     chunking_strategy: str = Form(None),
-    chunking_options: str = Form(None)
+    chunking_options: str = Form(None),
+    encoding: str = Form("utf-8"),
+    delimiter: str = Form(","),
+    use_pandas: bool = Form(True)
 ):
     try:
         # 保存上传的文件
@@ -616,6 +623,14 @@ async def load_file(
             "timestamp": datetime.now().isoformat()
         }
         
+        # 为CSV文件添加特定元数据
+        if file_type == "csv":
+            metadata["delimiter"] = delimiter
+            metadata["encoding"] = encoding
+        # 为TXT和Markdown文件添加编码信息
+        elif file_type in ["txt", "md"]:
+            metadata["encoding"] = encoding
+        
         # Parse chunking options if provided
         chunking_options_dict = None
         if chunking_options:
@@ -623,13 +638,40 @@ async def load_file(
         
         # 使用 LoadingService 加载文档
         loading_service = LoadingService()
-        raw_text = loading_service.load_pdf(
-            temp_path, 
-            loading_method, 
-            strategy=strategy,
-            chunking_strategy=chunking_strategy,
-            chunking_options=chunking_options_dict
-        )
+        raw_text = ""
+        
+        # 根据文件类型选择加载方法
+        if file_type == "pdf":
+            raw_text = loading_service.load_pdf(
+                temp_path, 
+                loading_method, 
+                strategy=strategy,
+                chunking_strategy=chunking_strategy,
+                chunking_options=chunking_options_dict
+            )
+        elif file_type == "txt":
+            raw_text = loading_service.load_txt(
+                temp_path,
+                encoding=encoding,
+                chunking_strategy=chunking_strategy,
+                chunking_options=chunking_options_dict
+            )
+        elif file_type == "csv":
+            raw_text = loading_service.load_csv(
+                temp_path,
+                delimiter=delimiter,
+                encoding=encoding,
+                use_pandas=use_pandas
+            )
+        elif file_type == "md":
+            raw_text = loading_service.load_markdown(
+                temp_path,
+                encoding=encoding,
+                chunking_strategy=chunking_strategy,
+                chunking_options=chunking_options_dict
+            )
+        else:
+            raise ValueError(f"Unsupported file type: {file_type}")
         
         metadata["total_pages"] = loading_service.get_total_pages()
         
